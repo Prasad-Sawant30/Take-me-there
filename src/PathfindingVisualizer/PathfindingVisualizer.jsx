@@ -5,6 +5,7 @@ import {
   greedy,
   getGreedyNodesInShortestPathOrder,
 } from "../algorithms/greedy";
+import { aStar, getAStarNodesInShortestPathOrder } from "../algorithms/aStar";
 import "./PathfindingVisualizer.css";
 
 const START_NODE_ROW = 10;
@@ -41,7 +42,7 @@ export default class PathfindingVisualizer extends Component {
     this.setState({ mouseIsPressed: false });
   }
 
-  animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
+  animate(visitedNodesInOrder, nodesInShortestPathOrder) {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
@@ -73,7 +74,7 @@ export default class PathfindingVisualizer extends Component {
     const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
     const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+    this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
   visualizeGreedy() {
@@ -84,7 +85,18 @@ export default class PathfindingVisualizer extends Component {
     const nodesInShortestPathOrder = getGreedyNodesInShortestPathOrder(
       finishNode
     );
-    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+    this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
+  }
+
+  visualizeAStar() {
+    const { grid } = this.state;
+    const startNode = grid[START_NODE_ROW][START_NODE_COL];
+    const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+    const visitedNodesInOrder = aStar(grid, startNode, finishNode);
+    const nodesInShortestPathOrder = getAStarNodesInShortestPathOrder(
+      finishNode
+    );
+    this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
   render() {
@@ -96,6 +108,7 @@ export default class PathfindingVisualizer extends Component {
           Visualize Dijkstra's Algorithm
         </button>
         <button onClick={() => this.visualizeGreedy()}>Greedy</button>
+        <button onClick={() => this.visualizeAStar()}>A-Star</button>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (

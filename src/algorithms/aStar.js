@@ -1,4 +1,4 @@
-export function greedy(grid, startNode, finishNode) {
+export function aStar(grid, startNode, finishNode) {
   const visitedNodesInOrder = [];
   startNode.distance = 0;
   const unvisitedNodes = getAllNodes(grid);
@@ -22,6 +22,7 @@ function updateUnvisitedNeighbors(node, finishNode, grid) {
   const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
   for (const neighbor of unvisitedNeighbors) {
     neighbor.distance =
+      node.distance +
       Math.abs(finishNode.row - neighbor.row) +
       Math.abs(finishNode.col - neighbor.col);
     neighbor.previousNode = node;
@@ -47,7 +48,7 @@ function getAllNodes(grid) {
   }
   return nodes;
 }
-export function getGreedyNodesInShortestPathOrder(finishNode) {
+export function getAStarNodesInShortestPathOrder(finishNode) {
   const nodesInShortestPathOrder = [];
   let currentNode = finishNode;
   while (currentNode !== null) {
