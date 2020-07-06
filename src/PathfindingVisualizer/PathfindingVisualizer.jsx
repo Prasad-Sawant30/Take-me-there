@@ -6,6 +6,7 @@ import {
   getGreedyNodesInShortestPathOrder,
 } from "../algorithms/greedy";
 import { aStar, getAStarNodesInShortestPathOrder } from "../algorithms/aStar";
+import { dfs, getDfsNodesInShortestPathOrder } from "../algorithms/dfs";
 import "./PathfindingVisualizer.css";
 
 const START_NODE_ROW = 10;
@@ -99,6 +100,15 @@ export default class PathfindingVisualizer extends Component {
     this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
+  visualizeDfs() {
+    const { grid } = this.state;
+    const startNode = grid[START_NODE_ROW][START_NODE_COL];
+    const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+    const visitedNodesInOrder = dfs(grid, startNode, finishNode);
+    const nodesInShortestPathOrder = getDfsNodesInShortestPathOrder(finishNode);
+    this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
+  }
+
   render() {
     const { grid, mouseIsPressed } = this.state;
 
@@ -109,6 +119,7 @@ export default class PathfindingVisualizer extends Component {
         </button>
         <button onClick={() => this.visualizeGreedy()}>Greedy</button>
         <button onClick={() => this.visualizeAStar()}>A-Star</button>
+        <button onClick={() => this.visualizeDfs()}>DFS</button>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (
